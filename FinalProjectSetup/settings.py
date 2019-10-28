@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     os.getenv('C9_HOSTNAME'),  # Cloud9
@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'FinalProjectSetup.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-print(os.getenv('DEVELOPMENT'))
+
 if os.getenv('DEVELOPMENT') == 'true':
     print('Development Database')
     DATABASES = {
@@ -92,13 +92,11 @@ if os.getenv('DEVELOPMENT') == 'true':
             'PORT': os.getenv('DB_PORT'),
         }
     }
-    print('Dev. db:', DATABASES)
 elif os.getenv('DEVELOPMENT') == 'false':
     print('Production Database')
     DATABASES = {
         'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
     }
-    print('Prod. db:', DATABASES)
 else:
     print('No Database configuration found!')
 
