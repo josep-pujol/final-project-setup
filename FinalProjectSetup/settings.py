@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import dj_database_url
 import django_heroku
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,6 +31,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     os.getenv('C9_HOSTNAME'),  # Cloud9
     os.getenv('HOSTNAME'),     # Heroku
+    os.getenv('DATABASE_URL'), # Postgres in Environment
 ]
 
 
@@ -76,13 +79,28 @@ WSGI_APPLICATION = 'FinalProjectSetup.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+print(os.getenv('DEVELOPMENT'))
+if os.getenv('DEVELOPMENT'):
+    print('Development Database')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DATABASE_URL'),
+            'PORT': os.getenv('DB_PORT'),
+        }
     }
-}
+    print('Dev. db:', DATABASES)
+else:
+    print('Production Database')
+    DATABASES = {
+        'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    }
+    print('Prod. db:', DATABASES)
+
+
 
 
 # Password validation
@@ -123,4 +141,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-django_heroku.settings(locals())
+
+# Automatic Configuration
+# https://devcenter.heroku.com/articles/django-app-configuration
+
+django_heroku.settings(locals(), databases=False)
