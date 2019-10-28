@@ -1,1 +1,1 @@
-web: gunicorn FinalProjectSetup.wsgi:app --log-file -
+web: gunicorn FinalProjectSetup.wsgi:application --log-file -
