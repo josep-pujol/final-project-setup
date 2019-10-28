@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'FinalProjectSetup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 print(os.getenv('DEVELOPMENT'))
-if os.getenv('DEVELOPMENT'):
+if os.getenv('DEVELOPMENT') == 'true':
     print('Development Database')
     DATABASES = {
         'default': {
@@ -93,13 +93,14 @@ if os.getenv('DEVELOPMENT'):
         }
     }
     print('Dev. db:', DATABASES)
-else:
+elif os.getenv('DEVELOPMENT') == 'false':
     print('Production Database')
     DATABASES = {
         'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
     }
     print('Prod. db:', DATABASES)
-
+else:
+    print('No Database configuration found!')
 
 
 
