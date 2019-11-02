@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'dummyApp.apps.DummyappConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -99,7 +100,6 @@ elif os.getenv('DEVELOPMENT') == 'false':
     }
 else:
     print('No Database configuration found!')
-
 
 
 # Password validation
